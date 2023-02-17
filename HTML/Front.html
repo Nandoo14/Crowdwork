@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>    
+  <script src="./Hit.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    
+      <form name='mturk_form' method='post' id='mturk_form' action="https://www.mturk.com/mturk/externalSubmit">
+        <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
+
+        <div style="text-align: center;"> 
+            <h1>NutriKal</h1>
+            <p style="margin-top: 0 px;">Descobre os pratos ideais para o teu objetivo</p> 
+          </div>       
+        </header>
+
+        <div class="survey" style="display: block;">
+
+          <div style="margin-top: 200px; text-align: center;">
+            <label for="objetivo">Diga o seu objetivo</label> 
+            <select name="objetivo" id="tipo_objetivo" >
+              <option value="Bulk(ganhar peso >1600kacl)">Bulk (ganhar peso >1600kcal)</option>
+              <option value="Manter(manter peso =1600kacl)">Manter (manter peso =1600kcal)</option>
+              <option value="Cut(perder peso <1600kacl)">Cut (perder peso <1600kcal)</option>
+            </select>
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center;" >
+            <label for="alimentacao">Diga o seu tipo de alimentação</label> 
+            <select name="alimentacao" id="tipo_alimentacao" class="tipo_alimentacao">
+              <option value="Omnivoro">Omnivoro</option>
+              <option value="Vegetariano">Vegetariano</option>
+            </select>  
+          </div>
+
+          <div style="margin-top: 30px; text-align: center;">
+            <label>Diga as suas restricoes e alergias</label><br>
+            <input name="Restricoes" type="text" id="tipo_restricoes">
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center;">
+            <button type="button" onclick="submeter_resultados()">Submeter</button>
+          </div>
+        </div>
+
+        <div  class="parte2" style="display: none;">
+
+          <div class="form" id="form" style="margin-top: 30px; display: none;">
+            <label>Respostas:</label>
+            <p></p>
+            <label>Objetivo:</label> 
+            <label id="objetivo" ></label> 
+            <br>
+            <label>Alimentacao:</label> 
+            <label id="alimentacao" ></label> 
+            <br>
+            <label>Restricoes:</label> 
+            <label id="restricoes" ></label> 
+            <p></p>    
+            <label>Selecione os pratos correspondentes as escolhas do utilizador</label>            
+          </div>
+
+          <div class="acompanhamentos" style=" text-align: center; margin-top: 30px; display: none;">
+            <label>Tabela sobre pricipais acompanhamentos alimentares (todos os valores assinalados são por cada 100 gramas)</label><br>
+            <label>Arroz: 130kcal e 2,7g de proteína</label><br>
+            <label>Massa: 131kcal e 5,2g de proteína</label><br>
+            <label>Batata cozida: 87kcal de proteína e 1,9g</label><br>
+            <label>Batata assada: 93kcal de proteína e 2,5g</label><br>
+            <label>Batata frita: 147kcal de proteína e 2,2g</label><br>
+            <label>Salada: 16kcal e 1,3g de proteína</label><br>
+            <label>Ovo frito: 196kcal e 13,6g de proteína</label><br>
+            <label>Ovo cozido: 155kcal e 12,6g de proteína</label><br>
+            <label>Paõ: 265kcal e 9,2g de proteína</label><br>
+          </div>
+
+          
+
+          <div class="dishes" style="display: none;">
+            <p></p>
+              <div class="resultados_final">
+                <label>Os pratos escolhidos para a sua dieta foram:</label>
+                <p></p>
+              </div>
+
+              <div class="container">
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens1" value="Bife de frango com batata cozida e salada"/>
+                  <div class="card-content">
+                    <img src="https://ataldamarmita.com.br/loja/1379-home_default/file-de-frango-grelhado-com-arroz-integral-e-mix-de-legumes-300g.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Bife de frango com batata cozida e salada</h4>
+                      <p>Frango: 197kcal e 29,8g de proteína</p>
+                    </div>
+                  </div>
+                  </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens2" value="Espetadas de perú"/>
+                  <div class="card-content">
+                    <img src="https://www.receitasaudaveis.com/wp-content/uploads/2019/01/15261331_w7r1e.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Espetadas de perú</h4>
+                      <p>Espetadas de perú: 121kcal e 17g de proteína</p>
+                    </div>
+                  </div>
+                  </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens3" value="Bifes de vaca com batata frita, ovo frito, feijão, arroz e farofa"/>
+                  <div class="card-content">
+                    <img src="https://www.receitasemenus.net/wp-content/uploads/2019/02/bitoque-vaca.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Bifes de vaca com batata frita, ovo frito, feijão, arroz e farofa</h4>
+                      <p>Vaca: 267kcal e 26,5g de proteína; Farofa: 383kcal e 0,29g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens4" value="Alheira"/>
+                  <div class="card-content">
+                    <img src="https://www.pingodoce.pt/wp-content/uploads/2021/07/alheira-assada-no-forno.jpeg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Alheira</h4>
+                      <p>Alheira: 280kcal e 14,2g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens5" value="Arroz de pato"/>
+                  <div class="card-content">
+                    <img src="https://ruralea.com/wp-content/uploads/2021/02/maxresdefault-3-1.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Arroz de pato</h4>
+                      <p>Pato: 337kcal e 18,6g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens6" value="Hamburger de vaca com batata frita e salada"/>
+                  <div class="card-content">
+                    <img src="https://i.pinimg.com/564x/f7/89/8e/f7898e89341cbbab99a0c8c915f4e00b--portuguese-food-carne.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Hamburger de vaca com batata frita e salada</h4>
+                      <p>Vaca: 267kcal e 26,5g de proteína; Maionese: 688kcal</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens7" value="Carbonara"/>
+                  <div class="card-content">
+                    <img src="https://www.thespruceeats.com/thmb/ovIQQQxQajADuIE2lqhgqq7ppyE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/pasta-carbonara-recipe-5210168-hero-01-80090e56abc04ca19d88ebf7fad1d157.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Carbonara</h4>
+                      <p>Carbonara: 149kcal e 4,9g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens8" value="Lasanha"/>
+                  <div class="card-content">
+                    <img src="https://www.mulherportuguesa.com/wp-content/uploads/2016/10/Receita-de-lasanha-de-carne.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Lasanha</h4>
+                      <p>130kcal e 6,5g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens9" value="Lombo assado"/>
+                  <div class="card-content">
+                    <img src="https://img.itdg.com.br/images/recipes/000/049/406/328779/328779_original.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Lombo assado com batata assada</h4>
+                      <p>Lombo assado: 65kcal e 6,8g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens10" value="Hot Wings KFC"/>
+                  <div class="card-content">
+                    <img src="https://www.kfc.pt/wp-content/uploads/2020/03/hotwings.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Hot wings KFC</h4>
+                      <p>Asas de frango KFC: 219kcal e 22,8g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens11" value="Pizza de fiambre pizza hut"/>
+                  <div class="card-content">
+                    <img src="https://echoboomer.pt/wp-content/uploads/2019/12/pizza-hut-tres-novos-restaurantes.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Pizza de fiambre pizza hut</h4>
+                      <p>Pizza de fiambre: 239kcal e 1g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens12" value="Big Mac"/>
+                  <div class="card-content">
+                    <img src="https://www.nit.pt/wp-content/uploads/2022/01/f1de8d79406d02a82a83e42b8e999fd3.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Big Mac</h4>
+                      <p>Big Mac: 250kcal e 13g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens13" value="Hot Dog"/>
+                  <div class="card-content">
+                    <img src="https://meucachorroquente.com.br/wp-content/uploads/2021/10/Como-fazer-cachorro-quente-Americano-1200x675.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Hot dog</h4>
+                      <p>Cachorro quente: 300kcal e 12g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens14" value="Cordon bleu"/>
+                  <div class="card-content">
+                    <img src="https://thumbs.dreamstime.com/b/galinha-de-cordon-bleu-com-arroz-e-salsa-98977913.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Cordon bleu com arroz</h4>
+                      <p>Cordon bleu: 208kcal e 13g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                  <input type="checkbox" class="imagens" name="imagens15" value="Francesinha"/>
+                  <div class="card-content">
+                    <img src="https://www.pingodoce.pt/wp-content/uploads/2017/09/francesinha.jpg" alt="" srcset=""  style=" width: 200px; height:200px;"/>
+                    <div class="content">
+                      <h4>Francesinha</h4>
+                      <p>Francesinha: 184kcal e 15g de proteína</p>
+                    </div>
+                  </div>
+                </label>
+                </div>
+
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens16" value="Bacalhau com broa de milho"/>
+                    <div class="card-content">
+                      <img src="https://www.pingodoce.pt/wp-content/uploads/2018/12/bacalhau-com-crosta-de-pesto-e-broa.png" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Bacalhau com broa</h4>
+                        <p>Bacalhau com broa: 211kcal e 19,2g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens17" value="Carapaus com legumes no forno"/>
+                    <div class="card-content">
+                      <img src="https://www.teleculinaria.pt/wp-content/uploads/2019/06/Carapaus-assados-com-molho-a-espanhola-CHFB-12-696x464.jpg.webp" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Carapaus com batata no forno</h4>
+                        <p>Carapaus: 262kcal e 24g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens18" value="Caril de peixe com arroz"/>
+                    <div class="card-content">
+                      <img src="https://www.teleculinaria.pt/wp-content/uploads/2022/11/Caril-de-peixe-com-arroz-de-coco-CHSB-9-696x464.jpg.webp" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Caril de peixe com arroz</h4>
+                        <p>Caril de peixe: 221kcal e 23g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens19" value="Fettuccine de camarao e natas"/>
+                    <div class="card-content">
+                      <img src="https://www.teleculinaria.pt/wp-content/uploads/2021/02/fettuccine-de-camarao-e-natas-696x464.jpg.webp" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Fettuccine de camarao</h4>
+                        <p>Camarão: 106kcal e 20,3g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens20" value="Perca assada com batata cebola e pimento"/>
+                    <div class="card-content">
+                      <img src="https://www.cozinharsemstress.pt/cozinhar/wp-content/uploads/2018/02/B-003-4326.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Perca assada com batata assada e legumes</h4>
+                        <p>Perca: 86kcal e 18,4g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" class="omni" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens21" value="Sardinha assada com salada de pimentos"/>
+                    <div class="card-content">
+                      <img src="https://cdn.vidaativa.pt/uploads/2020/08/sardinhas-assadas.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Sardinha assada com salada</h4>
+                        <p>Sardinha assada: 164kcal e 32,2g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens22" value="Canelones com espinafres e queijo"/>
+                    <div class="card-content">
+                      <img src="https://www.receitasja.com/wp-content/uploads/2013/12/canelones-espinafres-rj.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Canelones com espinafres e queijo</h4>
+                        <p>Canelones com espinafre e queijo: 146kcal e 3,3g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens23" value="Caril de grão com manga"/>
+                    <div class="card-content">
+                      <img src="https://www.teleculinaria.pt/wp-content/uploads/2019/03/CARIL-DE-LEGUMES_TRATADA-4-CHSB-696x466.jpg.webp" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Caril de grão e legumes</h4>
+                        <p>Caril de grão: 102kcal e 3,1g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+  
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens24" value="Hamburgeres de soja com cogumelos"/>
+                    <div class="card-content">
+                      <img src="https://www.teleculinaria.pt/wp-content/uploads/2015/04/Hamburguer-de-soja-CHEE-4-e1522237613221-697x420.jpg.webp" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Hamburgeres de soja com cogumelos e legumes</h4>
+                        <p>Hamburger de soja: 179kcal e 17,8g de proteína; Cogumelos: 22kcal e 3,1g de proteina</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens25" value="Lasanha de legumes com pao"/>
+                    <div class="card-content">
+                      <img src="https://www.pingodoce.pt/wp-content/uploads/2015/08/lasanha-de-legumes.jpeg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Lasanha de legumes</h4>
+                        <p>Lasanha de legumes: 88,3kcal e 2,9g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens26" value="Massa com espetadas de tofu"/>
+                    <div class="card-content">
+                      <img src="https://compassionatecuisineblog.com/wp-content/uploads/2021/06/Editada-DSC_0137.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Massa com espetadas de tofu e vegetais</h4>
+                        <p>Espetadas de tofu: 76kcal e 4,1g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens27" value="Pâo recheado com ovo e legumes"/>
+                    <div class="card-content">
+                      <img src="https://www.receitasemenus.net/wp-content/uploads/2018/03/pao-recheado-ovo-fiambre-forno.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Pâo recheado com ovo e legumes</h4>
+                        <p>Pão recheado: 350kcal e 14,7g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens28" value="Quiche de brocolos e couve flor"/>
+                    <div class="card-content">
+                      <img src="https://www.comidaereceitas.com.br/wp-content/uploads/2020/01/quiche_legumes.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Quiche de legumesr</h4>
+                        <p>Quiche de legumes: 158kcal e 10,7g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens29" value="Rissois de cogumelos"/>
+                    <div class="card-content">
+                      <img src="https://lh3.googleusercontent.com/p/AF1QipMROjloQAmbrELxuuS-Ue0dGAHjDaoAE8yCKjs8=w1080-h608-p-no-v0" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Rissois de cogumelos</h4>
+                        <p>Rissois de cogumelos: 200kcal e 4,6g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+    
+                <div name="div" style="width: 200px; height:200px; margin:5px">
+                  <label class="card">
+                    <input type="checkbox" class="imagens" name="imagens30" value="Tacos de soja"/>
+                    <div class="card-content">
+                      <img src="https://www.hazteveg.com/img/recipes/full/201903/R25-94793.jpg" alt="" srcset="" style="display: block; width: 200px; height:200px;"/>
+                      <div class="content">
+                        <h4>Tacos de soja com salada</h4>
+                        <p>Tacos: 180kcal e 12,8g de proteína; Carne de soja: 125kcal e 12,5g de proteína</p>
+                      </div>
+                    </div>
+                  </label> 
+                </div>
+                  
+              </div>
+            <br>
+            <button style="margin-top: 20px;" type="button" class="bt2" onclick="submeter_pratos()">Submeter</button >
+          
+            <div class="just" style="margin-top: 30px; display: none;">
+              <label>Justifique as escolhas dos pratos selecionadas:</label><br>
+              <input required name="justificacao" type="text" class="tipo_justificacao" style="width: 600px;">
+            </div>
+          
+            <div class="finalizar" style="margin-top: 20px; display: none;">
+              <button type="submit" class="finalizarBt" onclick="return Final()">Finalizar Hit</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <script language='Javascript'>turkSetAssignmentID();    
+      </script>
+        
+</body>
+</html>
+
+
+<!--
+<script>
+const p1 = document.querySelector(".p1");
+const p2 = document.querySelector(".p2");
+const p3 = document.querySelector(".p3");
+
+
+function submeter_resultados() {
+    const survey = document.querySelector(".survey");
+    const pratos = document.querySelector(".dishes");
+    const formulario = document.querySelector(".form");
+    const resultados_finais = document.querySelector(".resultados_final");
+    const bt2 = document.querySelector(".bt2");
+    const acompanhamentos = document.querySelector(".acompanhamentos");
+    const parte2 = document.querySelector(".parte2");
+    
+    survey.style.display= "none";
+    parte2.style.display= "block";
+    
+    document.getElementById("objetivo").innerHTML = tipo_objetivo.value;
+    document.getElementById("alimentacao").innerHTML = tipo_alimentacao.value;
+    document.getElementById("restricoes").innerHTML = tipo_restricoes.value;
+
+
+    const alim = document.querySelector(".tipo_alimentacao");
+    const omni = document.querySelectorAll(".omni");
+
+    if(alim.value == "Vegetariano"){
+
+      for (const image of omni) {
+        image.style.display = 'none';
+      }
+    }
+}
+
+function submeter_pratos() {
+    const pratos = document.querySelector(".dishes");
+    const formulario = document.querySelector(".form");
+    const resultados_finais = document.querySelector(".resultados_final");
+    const bt2 = document.querySelector(".bt2");
+    const acompanhamentos = document.querySelector(".acompanhamentos");
+    const finalizar_hit = document.querySelector(".finalizar");
+
+    
+
+    const input = document.getElementsByName('imagens');
+    
+
+    for (let i = 0; i < input.length; i++) {
+      if (input[i].checked) {
+        
+        //const imagePath = input[i].value;
+        //const image = document.querySelector(`img[src="${imagePath}"]`);
+        //image.style.display = 'block';
+
+        const div = document.getElementsByName('div');
+
+        div[i].style.display = 'block';
+        input[i].disabled = true;
+        input[i].checked = false;
+
+      } else {
+        //const imagePath = input[i].value;
+        //const image = document.querySelector(`img[src="${imagePath}"]`);
+        //const div = document.querySelectorAll(".div");
+        const div = document.getElementsByName('div');
+
+        div[i].style.display = 'none';
+        input[i].disabled = true;
+      } 
+    }
+
+   
+}
+
+function Final(){
+  return true;  
+}
+</script>
+
+<style>
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    width: 3500px;
+    margin: 0 auto;
+}
+
+.card {
+    position: relative;
+    height: 200px;
+    width: 300px;
+    margin: 5px;
+}
+
+.card:active {
+    transform: scale(0.96);
+}
+
+.card input {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0; 
+}
+
+.card input:checked ~ .card-content {
+    border-color: #4580E5;
+    border-width: 5px;
+}
+
+.card .card-content {
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 3px solid #FFFFFF;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.02)
+}
+
+.card-img {
+    position: relative;
+    height: 100%;
+    width: 300px;
+    left: 50%;
+    transform: translated(-50%, 0);
+    transition: all ease 0.3s;
+}
+
+
+.card .card-content:hover {
+    border-color: #000000;
+    border-width: 5px;
+}
+
+.card input:checked ~ .card-content img {
+}
+
+.content h4 { margin: 0 0 8px 0}
+
+.content p {
+    margin: 0;
+    line-height: 1;
+    font-size: 14px;
+}
+
+.content {
+    position: absolute;
+    bottom: -120px;
+    width: 100%;
+    padding: 12px;
+    background-color: #FFFFFF;
+    transition: all ease 0.3s;
+}
+
+.card:hover .content {
+    bottom: 0;
+}
+
+.card input:checked ~ .card-content:before, 
+.card input:checked ~ .card-content:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+}
+
+.card-content:before{
+    height: 20px;
+    width: 20px;
+    top: 10px;
+    right: 10px;
+    border: 1px solid #FFFFFF;
+    border-radius: 50%;
+    background-color: #4580E5
+}
+
+.card-content:after {
+    height: 4px;
+    width: 8px;
+    top: 16px;
+    right: 16px;
+    border: 1px solid #FFFFFF;
+    border-width: 0 0 2px 2px;
+    transform: rotate(-45deg);
+}
+
+</style>-->
